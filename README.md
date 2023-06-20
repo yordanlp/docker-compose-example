@@ -17,7 +17,7 @@ Ensure you have Docker and Docker Compose installed on your system.
    ```bash
    docker-compose up
 
-4. Run the migrations of the api and loadbalancer to create the table structure (https://github.com/yordanlp/LoadBalancer/tree/docker)[LoadBalancer] and (https://github.com/yordanlp/CoffeeShopApi/tree/features/docker)[API]
+4. Run the migrations of the api and loadbalancer to create the table structure [LoadBalancer](https://github.com/yordanlp/LoadBalancer/tree/docker) and [API](https://github.com/yordanlp/CoffeeShopApi/tree/features/docker)
 
 5. Discover the network name of the instances
 ```bash
