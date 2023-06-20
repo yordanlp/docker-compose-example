@@ -1,0 +1,65 @@
+version: '3'
+services:
+  api1:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - 5001:80
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  api2:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - 5002:80
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  api3:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - 5003:80
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  loadbalancer:
+    build:
+      context: ./LoadBalancer
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: coffeeshop
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
+
+
+volumes:
+  db-data:
