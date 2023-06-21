@@ -1,6 +1,7 @@
 version: '3'
 services:
   api1:
+    container_name: api1
     build:
       context: ./API
       dockerfile: Dockerfile
@@ -8,32 +9,36 @@ services:
       - 5001:80
     depends_on:
       - db
+      - loadbalancer
     networks:
       - backend
 
   api2:
+    container_name: api2
     build:
       context: ./API
       dockerfile: Dockerfile
     ports:
       - 5002:80
     depends_on:
-      - db
+      - api1
     networks:
       - backend
 
   api3:
+    container_name: api3
     build:
       context: ./API
       dockerfile: Dockerfile
     ports:
       - 5003:80
     depends_on:
-      - db
+      - api1
     networks:
       - backend
 
   loadbalancer:
+    container_name: loadbalancer
     build:
       context: ./LoadBalancer
       dockerfile: Dockerfile
@@ -45,6 +50,7 @@ services:
       - backend
 
   db:
+    container_name: db
     image: postgres
     environment:
       POSTGRES_USER: admin
