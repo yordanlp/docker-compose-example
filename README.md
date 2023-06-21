@@ -17,39 +17,36 @@ Ensure you have Docker and Docker Compose installed on your system.
    ```bash
    docker-compose up
 
-4. Run the migrations of the api and loadbalancer to create the table structure [LoadBalancer](https://github.com/yordanlp/LoadBalancer/tree/docker) and [API](https://github.com/yordanlp/CoffeeShopApi/tree/features/docker)
-
-5. Discover the network name of the instances
-```bash
-docker network ls
-```
-
-6. Get the name of the instances in the network to use docker dns
-```bash
-docker network inspect docker-compose-example_backend
-```
-docker-compose-example_backend: name of the network
-
-5. Configure the load balancer. To configure the load balancer you have to provide the urls of the hosted instances.
+4. Configure the load balancer. To configure the load balancer you have to provide the urls of the hosted instances.
 
 Instance1:
 - InternalHost: http://instance_name_in_network
 - ExternalHost: http://localhost:5001
 
-To do this you can make a POST request to this url where the loadbalancer is listening (http://localhost:8080/api/instance) with the following json 
+To do this you can make a POST request to this url where the loadbalancer is listening (http://localhost:8080/api/instance) with the following json. Because each container has a name defined these examples should work as data to pass to the load balancer.
 
 ```json
 {
-        "internalHost": "http://instance_name_in_network",
+        "internalHost": "http://api1",
         "externalHost": "http://localhost:5001"
+}
+
+{
+        "internalHost": "http://api2",
+        "externalHost": "http://localhost:5002"
+}
+
+{
+        "internalHost": "http://api3",
+        "externalHost": "http://localhost:5003"
 }
 ```
 
-and the same for every instance, and wait for a minute for the loadbalancer to update its data from the database.
+and wait for a minute for the loadbalancer to update its data from the database.
 
 The InternalHost is used by the loadbalancer to health check the instance and the ExternalHost is used to redirect the user to the instance endpoint exposed in the docker-compose.yml
 
-6. To see if it's working make a get request to http://localhost:8080/api/Coffee/Favourite/leaderboard and you should get a json like this
+5. To see if it's working make a get request to http://localhost:8080/api/Coffee/Favourite/leaderboard and you should get a json like this
 
 ```json
 {
